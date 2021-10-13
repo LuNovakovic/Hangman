@@ -1,12 +1,13 @@
 import React from 'react'
 
-function Word({ selectedWord, correctLetters }) {
+
+function Word({ word, correctLetters }) {
     return (
         <div className="word">
-            {selectedWord.split('').map((letter, i) => {
+            {word.split('').map((letter, i) => {
                 return (
                     <span className="letter" key={i}>
-                        {correctLetters.includes(letter) ? letter : ''}
+                        {correctLetters.includes(letter.toLowerCase()) ? letter : ''}
                     </span>
                 )
             })}
