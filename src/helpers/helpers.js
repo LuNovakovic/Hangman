@@ -9,7 +9,7 @@ export function checkWin(correct, wrong, word) {
     let status = 'win';
 
     //check for win
-    word.split('').forEach(letter => {
+    word.replaceAll(' ', '').split('').forEach(letter => {
         if (!correct.includes(letter.toLowerCase())) {
             status = '';
         }

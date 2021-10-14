@@ -1,6 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
-const WrongLetters = ({ wrongLetters }) => {
+const WrongLetters = () => {
+    const wrongLetters = useSelector(state => state.hangman.wrongLetters);
     return (
         <div className="wrong-letters-container">
             <div>

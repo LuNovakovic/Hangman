@@ -8,63 +8,35 @@ import Popup from './Popup';
 import { showNotification as show } from '../helpers/helpers';
 
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchQuote, typeLetter } from '../actions/hangman';
 
 
 
 function GameScreen() {
-    const [quote, setQuote] = useState(null);
-    const [playable, setPlayable] = useState(true);
-    const [correctLetters, setCorrectLetters] = useState([]);
-    const [wrongLetters, setwrongLetters] = useState([]);
-    const [showNotification, setShowNotification] = useState(false);
+    console.log('STATE:', useSelector(state => state))
+    const { quote, gameState } = useSelector(state => state.hangman);
+    const dispatch = useDispatch();
+    const playable = gameState === 'inProgress';
 
-    const fetchQuote = async () => {
-        const { data } = await axios.get('https://api.quotable.io/random');
-        const quote = data.content;
-        console.log('Got quote: ', quote);
-        setQuote(quote);
-    }
 
     useEffect(() => {
-        fetchQuote()
-    }, []);
+        dispatch(fetchQuote());
+    }, [dispatch]);
 
     useEffect(() => {
         const handleKeydown = event => {
             const { key, keyCode } = event;
             if (playable && keyCode >= 65 && keyCode <= 90) {
-                const letter = key.toLowerCase();
-
-                if (quote.toLowerCase().includes(letter)) {
-                    if (!correctLetters.includes(letter)) {
-                        setCorrectLetters(currentLetters => [...currentLetters, letter.toLowerCase()]);
-                    } else {
-                        show(setShowNotification);
-                    }
-                } else {
-                    if (!wrongLetters.includes(letter)) {
-                        setwrongLetters(wrongLetters => [...wrongLetters, letter]);
-                    } else {
-                        show(setShowNotification);
-                    }
-                }
+                dispatch(typeLetter(key));
             }
         }
 
         window.addEventListener('keydown', handleKeydown);
 
         return () => window.removeEventListener('keydown', handleKeydown);
-    }, [correctLetters, playable, quote, wrongLetters]);
+    }, [dispatch, playable]);
 
-    function playAgain() {
-        setPlayable(true);
-
-        // Empty Arrays 
-        setCorrectLetters([]);
-        setwrongLetters([]);
-
-        fetchQuote();
-    }
 
     if (!quote) {
         return <h1>Loading...</h1>;
@@ -77,19 +49,19 @@ function GameScreen() {
         <>
             <Header />
             <div className="game-container">
-                <Figure wrongLetters={wrongLetters} />
-                <WrongLetters wrongLetters={wrongLetters} />
+                <Figure />
+                <WrongLetters />
                 <div className="word-list">
                     {quote.split(' ').map((word, idx) => (
                         <span key={idx}>
-                            <Word word={word} correctLetters={correctLetters} />
+                            <Word word={word} />
                             &nbsp;&nbsp;
                         </span>
                     ))}
                 </div>
             </div>
-            <Popup correctLetters={correctLetters} wrongLetters={wrongLetters} selectedWord={quote} setPlayable={setPlayable} playAgain={playAgain} />
-            <Notification showNotification={showNotification} />
+            <Popup />
+            {/* <Notification showNotification={showNotification} /> */}
         </>
     );
 }

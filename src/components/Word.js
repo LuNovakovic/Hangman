@@ -1,7 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 
-function Word({ word, correctLetters }) {
+function Word({ word }) {
+    const { correctLetters } = useSelector(state => state.hangman);
     return (
         <div className="word">
             {word.split('').map((letter, i) => {

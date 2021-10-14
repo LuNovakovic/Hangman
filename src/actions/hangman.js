@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchQuote = () => {
     return async (dispatch) => {
         const { data } = await axios.get('https://api.quotable.io/random');
-        const quote = data.content;
+        const quote = data.content.replaceAll(/[^a-zA-Z0-9 ]/g, '');
         console.log('Got quote: ', quote);
         dispatch({ type: 'SET_QUOTE', quote });
     }
@@ -32,10 +32,23 @@ export const typeLetter = (key) => {
         const state = getState().hangman;
         const winState = checkWin(state.correctLetters, state.wrongLetters, state.quote);
         if (winState === 'win') {
-            dispatch({ action: 'SET_GAME_STATE', state: 'won' });
+            console.log('WON')
+            dispatch({ type: 'SET_GAME_STATE', state: 'won' });
         } else if (winState === 'lose') {
-            dispatch({ action: 'SET_GAME_STATE', state: 'lost' });
+            dispatch({ type: 'SET_GAME_STATE', state: 'lost' });
 
         }
+    }
+}
+
+/**
+ * Resetira tocna i netocna slova, vraca igru u tijek, povlaci novi citat
+ */
+export const playAgain = () => {
+    return async (dispatch) => {
+        dispatch({ type: 'SET_CORRECT_LETTERS', correctLetters: [] });
+        dispatch({ type: 'SET_WRONG_LETTERS', wrongLetters: [] });
+        dispatch({ type: 'SET_GAME_STATE', state: 'inProgress' });
+        await dispatch(fetchQuote());
     }
 }

@@ -1,7 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Figure = ({ wrongLetters }) => {
-    const errors = wrongLetters.length;
+const Figure = () => {
+    const errors = useSelector(state => state.hangman.wrongLetters.length);
 
     return (
         <svg height="250" width="200" className="figure-container">
