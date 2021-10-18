@@ -1,5 +1,4 @@
 const initialState = {
-    highscore: null,
     scores: [],
 };
 
@@ -8,13 +7,14 @@ const scores = (state = initialState, action) => {
         case 'ADD_SCORE':
             return {
                 ...state,
-                scores: action.scores,
+                scores: [...state.scores, action.score]
+
 
             };
-        case 'SET_HIGHSCORE':
+        case 'SET_SCORES':
             return {
                 ...state,
-                highscore: action.highscore,
+                scores: action.scores
             }
         default:
             return state

@@ -10,6 +10,8 @@ import { showNotification as show } from '../helpers/helpers';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuote, typeLetter } from '../actions/hangman';
+import { Scores } from './Scores';
+import { fetchScores } from '../actions/scores';
 
 
 
@@ -22,6 +24,7 @@ function GameScreen() {
 
     useEffect(() => {
         dispatch(fetchQuote());
+        dispatch(fetchScores());
     }, [dispatch]);
 
     useEffect(() => {
@@ -59,6 +62,7 @@ function GameScreen() {
                         </span>
                     ))}
                 </div>
+                <Scores />
             </div>
             <Popup />
             {/* <Notification showNotification={showNotification} /> */}

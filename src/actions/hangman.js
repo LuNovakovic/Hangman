@@ -1,15 +1,22 @@
 import { checkWin } from "../helpers/helpers";
 import axios from "axios";
+import { logScore } from "./scores";
+
+const QUOTE_API = 'https://api.quotable.io/random';
+
 
 
 export const fetchQuote = () => {
     return async (dispatch) => {
-        const { data } = await axios.get('https://api.quotable.io/random');
+        const { data } = await axios.get(QUOTE_API);
         const quote = data.content.replaceAll(/[^a-zA-Z0-9 ]/g, '');
-        console.log('Got quote: ', quote);
-        dispatch({ type: 'SET_QUOTE', quote });
+        const quoteId = data._id;
+        console.log('Got quote: ', quote, quoteId);
+        dispatch({ type: 'SET_QUOTE', quote, quoteId });
+        dispatch({ type: 'START_COUNTER' });
     }
 }
+
 
 export const typeLetter = (key) => {
     const letter = key.toLowerCase();
@@ -34,6 +41,8 @@ export const typeLetter = (key) => {
         if (winState === 'win') {
             console.log('WON')
             dispatch({ type: 'SET_GAME_STATE', state: 'won' });
+            const score = 100 / (1 + state.wrongLetters.length);
+            dispatch(logScore(score));
         } else if (winState === 'lose') {
             dispatch({ type: 'SET_GAME_STATE', state: 'lost' });
 

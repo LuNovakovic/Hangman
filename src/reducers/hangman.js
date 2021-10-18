@@ -1,8 +1,10 @@
 const initialState = {
     quote: null,
+    quoteId: null,
     correctLetters: [],
     wrongLetters: [],
-    gameState: 'inProgress', // Can be 'inProgress', 'won', 'lost'
+    gameState: 'inProgress', // Can be 'inProgress', 'won', 'lost',
+    startAt: null
 }
 
 const hangman = (state = initialState, action) => {
@@ -10,7 +12,8 @@ const hangman = (state = initialState, action) => {
         case 'SET_QUOTE':
             return {
                 ...state,
-                quote: action.quote
+                quote: action.quote,
+                quoteId: action.quoteId
             };
         case 'SET_GAME_STATE':
             return {
@@ -37,6 +40,11 @@ const hangman = (state = initialState, action) => {
                 ...state,
                 wrongLetters: [...state.wrongLetters, action.letter],
             };
+        case 'START_COUNTER':
+            return {
+                ...state,
+                startAt: new Date()
+            }
 
         default:
             return state
