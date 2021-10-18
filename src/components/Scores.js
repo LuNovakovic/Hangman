@@ -1,10 +1,13 @@
 import { useSelector } from "react-redux"
+import { Score } from "./Score";
 
 export const Scores = () => {
     const scores = useSelector(state => state.scores.scores);
     return (
-        <pre>
-            {JSON.stringify(scores, null, 4)}
-        </pre>
+        <div className="scores">
+            {scores.map(
+                (score) => <Score key={score.id} score={score} />
+            )}
+        </div>
     )
 }

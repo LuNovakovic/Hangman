@@ -129,3 +129,16 @@ h1 {
 .notification-container.show {
   transform: translateY(-50px);
 }
+
+.scores {
+  background: #9fb2c5;
+  position: absolute;
+}
+
+.score {
+  margin-bottom: 3rem;
+  color: aliceblue;
+  font-size: small;
+  align-items: center;
+  justify-content: center;
+}
