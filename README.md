@@ -1,5 +1,9 @@
-This is a simple Hangman game.
+# This is a simple Hangman game.
 
-To launch the game use npm start.
+## 1.Clone this repo: [`$ git clone https://github.com/LuNovakovic/Hangman`]
 
-I was using react, redux and axios for creating this project.
+## 2.Install dependencies: `npm install`
+
+## 3.Launch the game: `npm start` 
+
+### I was using react, redux and axios for creating this project.
